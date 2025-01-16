@@ -3,7 +3,16 @@ import os
 from dotenv import load_dotenv
 
 # Load AWS credentials from .env
-load_dotenv()
+ENV_DIR = os.path.join(os.path.dirname(__file__), "environment")
+if not os.path.exists(ENV_DIR):
+    os.makedirs(ENV_DIR, exist_ok=True) 
+
+ENV_FILE_PATH = os.path.join(os.path.dirname(__file__), ".env")
+if not os.path.exists(ENV_FILE_PATH):
+    with open(ENV_FILE_PATH, "w") as f:
+        f.write("[default]\n")
+
+load_dotenv(ENV_FILE_PATH)
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")

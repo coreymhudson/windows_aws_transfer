@@ -3,6 +3,7 @@ from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QPushButton, QLineEdit, QLabel, QMessageBox, QWidget
 )
 from uploader import upload_file_to_s3
+from dotenv import load_dotenv
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -99,8 +100,15 @@ class MainWindow(QMainWindow):
             return
 
         region = region.strip() if region else "us-east-1"
+        ENV_DIR = os.path.join(os.path.dirname(__file__), "environment")
+        if not os.path.exists(ENV_DIR):
+            os.makedirs(ENV_DIR, exist_ok=True)
 
-        with open(".env", "w") as env_file:
+        ENV_FILE_PATH = os.path.join(os.path.dirname(__file__), ".env")
+        if not os.path.exists(ENV_FILE_PATH):  
+            with open(ENV_FILE_PATH, "w") as f:
+                f.write("[default]\n")
+        with open(ENV_FILE_PATH, "w") as env_file:
             env_file.write(f"AWS_ACCESS_KEY_ID={access_key}\n")
             env_file.write(f"AWS_SECRET_ACCESS_KEY={secret_key}\n")
             env_file.write(f"AWS_REGION={region}\n")
