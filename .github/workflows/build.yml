@@ -55,46 +55,46 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
-        
-  #build-macos:
-  #  runs-on: macos-latest
 
-  #  steps:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
     # Checkout the repository
-  #  - name: Checkout code
-  #    uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
     # Set up Python
-#    - name: Setup Python
-#      uses: actions/setup-python@v4
-#      with:
-#        python-version: '3.9'
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
 
     # Install dependencies
-#    - name: Install dependencies
-#      run: |
-#        python -m pip install --upgrade pip
-#        pip install pyinstaller
-#        pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -r requirements.txt
 
     # Build the macOS executable
-#    - name: Build macOS executable
-#      run: |
-#        pyinstaller --onefile --noconsole app.py
+    - name: Build macOS executable
+      run: |
+        pyinstaller --onefile --noconsole app.py
 
     # Copy executable to repo's dist folder
-#    - name: Move executable to dist folder
-#      run: |
-#        mkdir -p ${GITHUB_WORKSPACE}/dist
-#        cp dist/app ${GITHUB_WORKSPACE}/dist/macos_aws_mover
+    - name: Move executable to dist folder
+      run: |
+        mkdir -p ${GITHUB_WORKSPACE}/dist
+        cp dist/app ${GITHUB_WORKSPACE}/dist/macos_aws_mover
       
     # Commit and push the macOS executable to the repository
-#    - name: Commit and push dist folder
-#      run: |
-#        git config --global user.name "github-actions[bot]"
-#        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-#        git add dist/macos_aws_mover
-#        git commit -m "Add built exectuable to dist folder"
-#        git push
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Commit and push dist folder
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add dist/macos_aws_mover
+        git commit -m "Add built exectuable to dist folder"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
