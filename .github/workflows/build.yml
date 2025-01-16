@@ -38,7 +38,9 @@ jobs:
     # Copy executable to repo's dist folder
     - name: Move executable to dist folder
       run: |
-        mkdir dist
+        if not exist ${GITHUB_WORKSPACE}\\dist (
+          mkdir dist
+        )
         cp dist\\app.exe ${GITHUB_WORKSPACE}\\dist\\windows_aws_mover.exe
 
     # Push the executable to the repository
