@@ -34,10 +34,20 @@ jobs:
     - name: Build executable
       run: |
         pyinstaller --onefile --noconsole app.py
+    
+    # Copy executable to repo's dist folder
+    - name: Move executable to dist folder
+      run: |
+        mkdir dist
+        cp dist\\app.exe ${GITHUB_WORKSPACE}\\dist\\windows_aws_mover.exe
 
-    # Upload the executable as an artifact
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: windows-executable
-        path: dist/app.exe
+    # Push the executable to the repository
+    - name: Commit and push dist folder
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add dist/windows_aws_mover.exe
+        git commit -m "Add built exectuable to dist folder"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
