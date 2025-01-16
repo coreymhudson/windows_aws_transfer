@@ -46,9 +46,9 @@ jobs:
 
     # Clean up build artifacts
     - name: Clean up build artifacts
+      shell: cmd
       run: |
         rmdir /s /q build
-        rmdir /s /q dist
         del /q *.spec
 
     # Push the executable to the repository
@@ -102,7 +102,6 @@ jobs:
     - name: Clean up build artifacts
       run: |
         rm -rf build
-        rm -rf dist
         rm -f *.spec
 
     # Commit and push the macOS executable to the repository
