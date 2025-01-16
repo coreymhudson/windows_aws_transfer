@@ -18,15 +18,14 @@ AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
 
-# Initialize S3 client
-s3 = boto3.client(
-    "s3",
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_REGION,
-)
+def upload_file_to_s3(file_path, bucket_name, aws_access_key, aws_secret_access_key, region="us-east-1"):
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=aws_access_key,
+        aws_secret_access_key=aws_secret_access_key,
+        region_name=region,
+    )
 
-def upload_file_to_s3(file_path, bucket_name):
     file_name = os.path.basename(file_path)
     file_size = os.path.getsize(file_path)
     chunk_size = 50 * 1024 * 1024  # 50 MB
@@ -42,6 +41,8 @@ def upload_file_to_s3(file_path, bucket_name):
         with open(file_path, "rb") as f:
             for part_number in range(1, total_parts + 1):
                 chunk = f.read(chunk_size)
+                if not chunk:
+                    break
                 response = s3.upload_part(
                     Bucket=bucket_name,
                     Key=file_name,
@@ -53,6 +54,7 @@ def upload_file_to_s3(file_path, bucket_name):
                 print(f"Uploaded part {part_number}/{total_parts}")
 
         # Complete the upload
+        print(f"Completing upload with parts: {parts}")
         s3.complete_multipart_upload(
             Bucket=bucket_name,
             Key=file_name,

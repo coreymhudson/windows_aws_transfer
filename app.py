@@ -1,9 +1,41 @@
 import os
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QVBoxLayout, QPushButton, QLineEdit, QLabel, QMessageBox, QWidget
+    QApplication, QMainWindow, QVBoxLayout, QPushButton, QLineEdit,
+    QLabel, QMessageBox, QWidget, QDialog, QDialogButtonBox, QFormLayout
 )
 from uploader import upload_file_to_s3
-from dotenv import load_dotenv
+
+class AWSCredentialsDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Enter AWS Credentials")
+
+        self.access_key_input = QLineEdit()
+        self.secret_key_input = QLineEdit()
+        self.secret_key_input.setEchoMode(QLineEdit.EchoMode.Password)
+        self.region_input = QLineEdit()
+        self.region_input.setText("us-east-1")
+
+        form_layout = QFormLayout()
+        form_layout.addRow("Access Key:", self.access_key_input)
+        form_layout.addRow("Secret Key:", self.secret_key_input)
+        form_layout.addRow("Region:", self.region_input)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QVBoxLayout()
+        layout.addLayout(form_layout)
+        layout.addWidget(button_box)
+        self.setLayout(layout)
+
+    def get_credentials(self):
+        return (
+            self.access_key_input.text().strip(),
+            self.secret_key_input.text().strip(),
+            self.region_input.text().strip() or "us-east-1"
+        )
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -11,22 +43,22 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("AWS S3 Large File Uploader")
         self.setGeometry(100, 100, 400, 300)
 
-        # Layout
+        self.aws_access_key = None
+        self.aws_secret_key = None
+        self.aws_region = "us-east-1"
+
         layout = QVBoxLayout()
 
-        # AWS Configuration Button
         self.aws_config_button = QPushButton("Set AWS Credentials")
         self.aws_config_button.clicked.connect(self.set_aws_credentials)
         layout.addWidget(self.aws_config_button)
 
-        # Bucket input
         self.bucket_label = QLabel("S3 Bucket Name:")
         self.bucket_input = QLineEdit()
         self.bucket_input.setPlaceholderText("Enter S3 bucket name")
         layout.addWidget(self.bucket_label)
         layout.addWidget(self.bucket_input)
 
-        # File selection and upload
         self.file_label = QLabel("File to Upload:")
         layout.addWidget(self.file_label)
         self.file_input = QLineEdit()
@@ -41,90 +73,32 @@ class MainWindow(QMainWindow):
         self.upload_button.clicked.connect(self.upload_file)
         layout.addWidget(self.upload_button)
 
-        # Status label
         self.status_label = QLabel("")
         layout.addWidget(self.status_label)
 
-        # Set central widget
         container = QWidget()
         container.setLayout(layout)
         self.setCentralWidget(container)
 
     def set_aws_credentials(self):
-        """Prompt the user to enter AWS credentials and store them in a .env file."""
-        from PySide6.QtWidgets import QDialog, QVBoxLayout, QLineEdit, QPushButton
-
-        dialog = QDialog(self)
-        dialog.setWindowTitle("Set AWS Credentials")
-        dialog.setGeometry(150, 150, 300, 200)
-
-        layout = QVBoxLayout()
-
-        # AWS Access Key ID
-        access_key_label = QLabel("AWS Access Key ID:")
-        access_key_input = QLineEdit()
-        layout.addWidget(access_key_label)
-        layout.addWidget(access_key_input)
-
-        # AWS Secret Access Key
-        secret_key_label = QLabel("AWS Secret Access Key:")
-        secret_key_input = QLineEdit()
-        secret_key_input.setEchoMode(QLineEdit.Password)
-        layout.addWidget(secret_key_label)
-        layout.addWidget(secret_key_input)
-
-        # AWS Region
-        region_label = QLabel("AWS Region:")
-        region_input = QLineEdit()
-        region_input.setPlaceholderText("us-east-1")
-        layout.addWidget(region_label)
-        layout.addWidget(region_input)
-
-        # Save Button
-        save_button = QPushButton("Save")
-        save_button.clicked.connect(lambda: self.save_aws_credentials(
-            access_key_input.text(),
-            secret_key_input.text(),
-            region_input.text(),
-            dialog
-        ))
-        layout.addWidget(save_button)
-
-        dialog.setLayout(layout)
-        dialog.exec()
-
-    def save_aws_credentials(self, access_key, secret_key, region, dialog):
-        """Save the provided AWS credentials to a .env file."""
-        if not access_key or not secret_key:
-            QMessageBox.warning(self, "Error", "Access Key and Secret Key cannot be empty.")
-            return
-
-        region = region.strip() if region else "us-east-1"
-        ENV_DIR = os.path.join(os.path.dirname(__file__), "environment")
-        if not os.path.exists(ENV_DIR):
-            os.makedirs(ENV_DIR, exist_ok=True)
-
-        ENV_FILE_PATH = os.path.join(os.path.dirname(__file__), ".env")
-        if not os.path.exists(ENV_FILE_PATH):  
-            with open(ENV_FILE_PATH, "w") as f:
-                f.write("[default]\n")
-        with open(ENV_FILE_PATH, "w") as env_file:
-            env_file.write(f"AWS_ACCESS_KEY_ID={access_key}\n")
-            env_file.write(f"AWS_SECRET_ACCESS_KEY={secret_key}\n")
-            env_file.write(f"AWS_REGION={region}\n")
-
-        QMessageBox.information(self, "Success", "AWS credentials saved successfully.")
-        dialog.accept()
+        dialog = AWSCredentialsDialog(self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            access_key, secret_key, region = dialog.get_credentials()
+            if not access_key or not secret_key:
+                QMessageBox.warning(self, "Error", "AWS Access Key and Secret Key are required.")
+                return
+            self.aws_access_key = access_key
+            self.aws_secret_key = secret_key
+            self.aws_region = region
+            QMessageBox.information(self, "Success", "AWS credentials set successfully.")
 
     def select_file(self):
-        """Open a file dialog to select a file."""
         from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getOpenFileName(self, "Select File")
         if file_path:
             self.file_input.setText(file_path)
 
     def upload_file(self):
-        """Upload the selected file to the specified S3 bucket."""
         bucket = self.bucket_input.text().strip()
         file_path = self.file_input.text().strip()
 
@@ -134,10 +108,19 @@ class MainWindow(QMainWindow):
         if not os.path.isfile(file_path):
             QMessageBox.warning(self, "Error", "Please select a valid file.")
             return
+        if not self.aws_access_key or not self.aws_secret_key:
+            QMessageBox.warning(self, "Error", "Please set AWS credentials first.")
+            return
 
         self.status_label.setText("Uploading...")
         try:
-            upload_file_to_s3(file_path, bucket)
+            upload_file_to_s3(
+                file_path=file_path,
+                bucket_name=bucket,
+                aws_access_key=self.aws_access_key,
+                aws_secret_access_key=self.aws_secret_key,
+                region=self.aws_region
+            )
             QMessageBox.information(self, "Success", "File uploaded successfully.")
             self.status_label.setText("Upload complete.")
         except Exception as e:
