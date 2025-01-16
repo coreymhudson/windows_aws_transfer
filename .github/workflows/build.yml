@@ -49,7 +49,8 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add dist/windows_aws_mover.exe
+        git pull --rebase origin main
+        git add dist/
         git commit -m "Add built exectuable to dist folder"
         git push
       env:
@@ -93,7 +94,8 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add dist/macos_aws_mover
+        git pull --rebase origin main
+        git add dist/
         git commit -m "Add built exectuable to dist folder"
         git push
       env:
