@@ -44,6 +44,13 @@ jobs:
         )
         copy dist\app.exe "%GITHUB_WORKSPACE%\dist\windows_aws_mover.exe"
 
+    # Clean up build artifacts
+    - name: Clean up build artifacts
+      run: |
+        rmdir /s /q build
+        rmdir /s /q dist
+        del /q *.spec
+
     # Push the executable to the repository
     - name: Commit and push dist folder
       run: |
@@ -90,7 +97,14 @@ jobs:
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/dist
         cp dist/app ${GITHUB_WORKSPACE}/dist/macos_aws_mover
-      
+    
+    # Clean up build artifacts
+    - name: Clean up build artifacts
+      run: |
+        rm -rf build
+        rm -rf dist
+        rm -f *.spec
+
     # Commit and push the macOS executable to the repository
     - name: Commit and push dist folder
       run: |
