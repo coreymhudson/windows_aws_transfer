@@ -35,7 +35,7 @@ class AWSCredentialsDialog(QDialog):
         self.apply_styles()
 
     def apply_styles(self):
-        font_path = os.path.abspath("fonts/AlbertSans-Regular.ttf")
+        font_path = os.path.abspath("./fonts/AlbertSans-Regular.ttf")
         if not os.path.exists(font_path):
             print(f"Font file not found: {font_path}")
             return
@@ -52,7 +52,7 @@ class AWSCredentialsDialog(QDialog):
 
         font_family = font_families[0]
 
-        bold_font_path = os.path.abspath("fonts/Sora-Medium.ttf")
+        bold_font_path = os.path.abspath("./fonts/Sora-Medium.ttf")
         if not os.path.exists(bold_font_path):
             print(f"Font file not found: {bold_font_path}")
             return
@@ -170,7 +170,7 @@ class MainWindow(QMainWindow):
         self.apply_styles()
 
     def apply_styles(self):
-        font_path = os.path.abspath("fonts/AlbertSans-Regular.ttf")
+        font_path = os.path.abspath("./fonts/AlbertSans-Regular.ttf")
         if not os.path.exists(font_path):
             print(f"Font file not found: {font_path}")
             return
@@ -187,7 +187,7 @@ class MainWindow(QMainWindow):
 
         font_family = font_families[0]
 
-        bold_font_path = os.path.abspath("fonts/Sora-Medium.ttf")
+        bold_font_path = os.path.abspath("./fonts/Sora-Medium.ttf")
         if not os.path.exists(bold_font_path):
             print(f"Font file not found: {bold_font_path}")
             return
