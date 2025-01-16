@@ -42,7 +42,7 @@ jobs:
         if not exist "%GITHUB_WORKSPACE%\dist (
           mkdir "%GITHUB_WORKSPACE%\dist"
         )
-        cp dist\app.exe "%GITHUB_WORKSPACE%\dist\windows_aws_mover.exe"
+        copy dist\app.exe "%GITHUB_WORKSPACE%\dist\windows_aws_mover.exe"
 
     # Push the executable to the repository
     - name: Commit and push dist folder
