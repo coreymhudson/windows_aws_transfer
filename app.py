@@ -1,8 +1,10 @@
 import os
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QPushButton, QLineEdit,
-    QLabel, QMessageBox, QWidget, QDialog, QDialogButtonBox, QFormLayout
+    QLabel, QMessageBox, QWidget, QDialog, QDialogButtonBox, QFormLayout, QFileDialog
 )
+from PySide6.QtGui import QFontDatabase, QFont
+from PySide6.QtCore import Qt
 from uploader import upload_file_to_s3
 
 class AWSCredentialsDialog(QDialog):
@@ -30,18 +32,103 @@ class AWSCredentialsDialog(QDialog):
         layout.addWidget(button_box)
         self.setLayout(layout)
 
-    def get_credentials(self):
-        return (
-            self.access_key_input.text().strip(),
-            self.secret_key_input.text().strip(),
-            self.region_input.text().strip() or "us-east-1"
-        )
+        self.apply_styles()
+
+    def apply_styles(self):
+        font_path = os.path.abspath("fonts/AlbertSans-Regular.ttf")
+        if not os.path.exists(font_path):
+            print(f"Font file not found: {font_path}")
+            return
+
+        font_id = QFontDatabase.addApplicationFont(font_path)
+        if font_id == -1:
+            print(f"Failed to load font: {font_path}")
+            return
+
+        font_families = QFontDatabase.applicationFontFamilies(font_id)
+        if not font_families:
+            print(f"No font families found for font ID: {font_id}")
+            return
+
+        font_family = font_families[0]
+
+        bold_font_path = os.path.abspath("fonts/Sora-Medium.ttf")
+        if not os.path.exists(bold_font_path):
+            print(f"Font file not found: {bold_font_path}")
+            return
+
+        bold_font_id = QFontDatabase.addApplicationFont(bold_font_path)
+        if bold_font_id == -1:
+            print(f"Failed to load font: {bold_font_path}")
+            return
+
+        bold_font_families = QFontDatabase.applicationFontFamilies(bold_font_id)
+        if not bold_font_families:
+            print(f"No font families found for font ID: {bold_font_id}")
+            return
+
+        bold_font_family = bold_font_families[0]
+
+        self.setStyleSheet(f"""
+            QDialog {{
+                background-color: #1d1f21;
+                font-family: '{font_family}';
+                color: #ffffff;
+            }}
+            QLineEdit {{
+                padding: 10px;
+                border: 1px solid #4a4a4a;
+                border-radius: 4px;
+                font-size: 16px;
+                font-family: '{bold_font_family}';
+                background-color: #2c2f33;
+                color: #ffffff;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.24);
+                transition: all 0.3s ease;
+            }}
+            QLineEdit:focus {{
+                border-color: #505AAF;
+                box-shadow: 0 0 5px rgba(80, 90, 175, 0.5);
+            }}
+            QLabel {{
+                font-size: 16px;
+                margin-bottom: 5px;
+                font-family: '{bold_font_family}';
+                color: #ffffff;
+            }}
+            QPushButton {{
+                background-color: #505AAF;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 8px;
+                font-family: '{font_family}';
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+            }}
+            QPushButton:hover {{
+                background-color: #404A9E;
+                box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+                transform: translateY(-2px);
+            }}
+            QPushButton:pressed {{
+                background-color: #303A8E;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                transform: translateY(2px);
+            }}
+        """)
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("AWS S3 Large File Uploader")
-        self.setGeometry(100, 100, 400, 300)
+        self.setGeometry(100, 100, 500, 400)
 
         self.aws_access_key = None
         self.aws_secret_key = None
@@ -80,6 +167,103 @@ class MainWindow(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
+        self.apply_styles()
+
+    def apply_styles(self):
+        font_path = os.path.abspath("fonts/AlbertSans-Regular.ttf")
+        if not os.path.exists(font_path):
+            print(f"Font file not found: {font_path}")
+            return
+
+        font_id = QFontDatabase.addApplicationFont(font_path)
+        if font_id == -1:
+            print(f"Failed to load font: {font_path}")
+            return
+
+        font_families = QFontDatabase.applicationFontFamilies(font_id)
+        if not font_families:
+            print(f"No font families found for font ID: {font_id}")
+            return
+
+        font_family = font_families[0]
+
+        bold_font_path = os.path.abspath("fonts/Sora-Medium.ttf")
+        if not os.path.exists(bold_font_path):
+            print(f"Font file not found: {bold_font_path}")
+            return
+
+        bold_font_id = QFontDatabase.addApplicationFont(bold_font_path)
+        if bold_font_id == -1:
+            print(f"Failed to load font: {bold_font_path}")
+            return
+
+        bold_font_families = QFontDatabase.applicationFontFamilies(bold_font_id)
+        if not bold_font_families:
+            print(f"No font families found for font ID: {bold_font_id}")
+            return
+
+        bold_font_family = bold_font_families[0]
+
+        self.setStyleSheet(f"""
+            QMainWindow {{
+                background-color: #1d1f21;
+                font-family: '{font_family}';
+                color: #ffffff;
+            }}
+            QMessageBox {{
+                background-color: #1d1f21;
+                font-family: '{font_family}';
+                color: #ffffff;
+            }}
+            QPushButton {{
+                background-color: #505AAF;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 8px;
+                font-family: '{font_family}';
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+            }}
+            QPushButton:hover {{
+                background-color: #404A9E;
+                box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+                transform: translateY(-2px);
+            }}
+            QPushButton:pressed {{
+                background-color: #303A8E;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                transform: translateY(2px);
+            }}
+            QLineEdit {{
+                padding: 10px;
+                border: 1px solid #4a4a4a;
+                border-radius: 4px;
+                font-size: 16px;
+                font-family: '{bold_font_family}';
+                background-color: #2c2f33;
+                color: #ffffff;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.24);
+                transition: all 0.3s ease;
+            }}
+            QLineEdit:focus {{
+                border-color: #505AAF;
+                box-shadow: 0 0 5px rgba(80, 90, 175, 0.5);
+            }}
+            QLabel {{
+                font-size: 16px;
+                margin-bottom: 5px;
+                font-family: '{bold_font_family}';
+                color: #ffffff;
+            }}
+        """)
+
     def set_aws_credentials(self):
         dialog = AWSCredentialsDialog(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
@@ -93,7 +277,6 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, "Success", "AWS credentials set successfully.")
 
     def select_file(self):
-        from PySide6.QtWidgets import QFileDialog
         file_path, _ = QFileDialog.getOpenFileName(self, "Select File")
         if file_path:
             self.file_input.setText(file_path)
