@@ -50,6 +50,7 @@ jobs:
       run: |
         rmdir /s /q build
         del /q *.spec
+        del /q dist\app.exe
 
     # Push the executable to the repository
     - name: Commit and push dist folder
@@ -103,6 +104,8 @@ jobs:
       run: |
         rm -rf build
         rm -f *.spec
+        rm -rf dist/app
+        rm -rf dist/app.app
 
     # Commit and push the macOS executable to the repository
     - name: Commit and push dist folder
