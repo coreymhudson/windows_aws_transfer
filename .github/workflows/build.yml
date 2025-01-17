@@ -114,13 +114,12 @@ jobs:
     - name: Move executable to dist folder
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/dist
-        cp dist/app ${GITHUB_WORKSPACE}/dist/macos_aws_mover
+        cp dist/app/app ${GITHUB_WORKSPACE}/dist/macos_aws_mover
     
     # Clean up build artifacts
     - name: Clean up build artifacts
       run: |
         rm -rf dist/app
-        rm -rf dist/app.app
 
     # Commit and push the macOS executable to the repository
     - name: Commit and push dist folder
