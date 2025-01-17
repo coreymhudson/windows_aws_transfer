@@ -1,4 +1,5 @@
 import os
+import sys
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QPushButton, QLineEdit,
     QLabel, QMessageBox, QWidget, QDialog, QDialogButtonBox, QFormLayout, QFileDialog
@@ -6,6 +7,11 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QFontDatabase, QFont
 from PySide6.QtCore import Qt
 from uploader import upload_file_to_s3
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
 
 class AWSCredentialsDialog(QDialog):
     def __init__(self, parent=None):
@@ -35,7 +41,7 @@ class AWSCredentialsDialog(QDialog):
         self.apply_styles()
 
     def apply_styles(self):
-        font_path = os.path.abspath("./fonts/AlbertSans-Regular.ttf")
+        font_path = resource_path("fonts/AlbertSans-Regular.ttf")
         if not os.path.exists(font_path):
             print(f"Font file not found: {font_path}")
             return
@@ -52,7 +58,7 @@ class AWSCredentialsDialog(QDialog):
 
         font_family = font_families[0]
 
-        bold_font_path = os.path.abspath("./fonts/Sora-Medium.ttf")
+        bold_font_path = resource_path("fonts/Sora-Medium.ttf")
         if not os.path.exists(bold_font_path):
             print(f"Font file not found: {bold_font_path}")
             return
@@ -170,7 +176,7 @@ class MainWindow(QMainWindow):
         self.apply_styles()
 
     def apply_styles(self):
-        font_path = os.path.abspath("./fonts/AlbertSans-Regular.ttf")
+        font_path = resource_path("fonts/AlbertSans-Regular.ttf")
         if not os.path.exists(font_path):
             print(f"Font file not found: {font_path}")
             return
@@ -187,7 +193,7 @@ class MainWindow(QMainWindow):
 
         font_family = font_families[0]
 
-        bold_font_path = os.path.abspath("./fonts/Sora-Medium.ttf")
+        bold_font_path = resource_path("fonts/Sora-Medium.ttf")
         if not os.path.exists(bold_font_path):
             print(f"Font file not found: {bold_font_path}")
             return
