@@ -60,6 +60,7 @@ jobs:
         rmdir /s /q build
         del /q *.spec
         del /q dist\app\app.exe
+        rmdir /s /q app\_internal
 
     # Push the executable to the repository
     - name: Commit and push dist folder
@@ -101,7 +102,13 @@ jobs:
     - name: Build macOS executable
       run: |
         pyinstaller --noconfirm app.spec
-
+    
+    #List contents of dist directory to verify executable creation
+    - name: List dist directory
+      run: |
+        ls dist
+        ls dist/app
+        
     # Copy executable to repo's dist folder
     - name: Move executable to dist folder
       run: |
