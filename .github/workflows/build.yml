@@ -57,8 +57,6 @@ jobs:
     - name: Clean up build artifacts
       shell: cmd
       run: |
-        rmdir /s /q build
-        del /q *.spec
         del /q dist\app\app.exe
         rmdir /s /q app\_internal
 
@@ -121,7 +119,6 @@ jobs:
     # Clean up build artifacts
     - name: Clean up build artifacts
       run: |
-        rm -rf build
         rm -rf dist/app
         rm -rf dist/app.app
 
