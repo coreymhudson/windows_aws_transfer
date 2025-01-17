@@ -54,10 +54,10 @@ jobs:
         copy dist\app\app.exe "%GITHUB_WORKSPACE%\dist\windows_aws_mover.exe"
 
     # Clean up build artifacts
-    - name: Clean up build artifacts
-      shell: cmd
-      run: |
-        rmdir /s /q dist\app
+    # - name: Clean up build artifacts
+    #  shell: cmd
+    #  run: |
+    #    rmdir /s /q dist\app
 
     # Push the executable to the repository
     - name: Commit and push dist folder
@@ -117,9 +117,9 @@ jobs:
         cp dist/app/app ${GITHUB_WORKSPACE}/dist/macos_aws_mover
     
     # Clean up build artifacts
-    - name: Clean up build artifacts
-      run: |
-        rm -rf dist/app
+    #- name: Clean up build artifacts
+    #  run: |
+    #    rm -rf dist/app
 
     # Commit and push the macOS executable to the repository
     - name: Commit and push dist folder

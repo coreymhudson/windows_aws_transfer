@@ -6,7 +6,7 @@ a = Analysis(
     ['app.py'],
     pathex=['.'],
     binaries=[],
-    datas=[('fonts/AlbertSans-Regular.ttf', 'fonts'), ('fonts/Sora-Medium.ttf', 'fonts'), ('_internal', '_internal')],
+    datas=[('fonts/AlbertSans-Regular.ttf', 'fonts'), ('fonts/Sora-Medium.ttf', 'fonts')],
     hiddenimports=[],
     hookspath=[],
     runtime_hooks=[],
