@@ -35,6 +35,10 @@ jobs:
       run: |
         pyinstaller --noconfirm app.spec
     
+    #List contents of dist directory to verify executable creation
+    - name: List dist directory
+      run: dir dist
+    
     # Copy executable to repo's dist folder
     - name: Move executable to dist folder
       shell: cmd
