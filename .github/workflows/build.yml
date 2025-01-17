@@ -33,7 +33,7 @@ jobs:
     # Build the executable
     - name: Build executable
       run: |
-        pyinstaller --noconfirm app.spec
+        pyinstaller --noconfirm --onefile app.spec
     
     #List contents of dist directory to verify executable creation
     - name: List dist directory
@@ -99,7 +99,7 @@ jobs:
     # Build the macOS executable
     - name: Build macOS executable
       run: |
-        pyinstaller --noconfirm app.spec
+        pyinstaller --noconfirm --onefile app.spec
     
     #List contents of dist directory to verify executable creation
     - name: List dist directory
