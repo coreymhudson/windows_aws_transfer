@@ -107,8 +107,11 @@ jobs:
     - name: List dist directory
       run: |
         ls dist
-        ls dist/app
-        
+    
+    - name: List app directory
+      run: |
+        ls -lart dist/app
+
     # Copy executable to repo's dist folder
     - name: Move executable to dist folder
       run: |
