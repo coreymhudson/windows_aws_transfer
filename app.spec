@@ -2,13 +2,12 @@
 
 block_cipher = None
 
-datas=[('fonts/AlbertSans-Regular.ttf', 'fonts'), ('fonts/Sora-Medium.ttf', 'fonts')]
 
 a = Analysis(
     ['app.py'],
     pathex=['.'],
     binaries=[],
-    datas=datas,
+    datas=[('fonts/AlbertSans-Regular.ttf', 'fonts'), ('fonts/Sora-Medium.ttf', 'fonts')],
     hiddenimports=[],
     hookspath=[],
     runtime_hooks=[],
@@ -31,15 +30,4 @@ exe = EXE(
     upx_exclude=[],
     runtime_tmpdir=None,
     console=False,  # Set to False for a windowed application without a console
-)
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='app',
-    distpath='dist',
 )
