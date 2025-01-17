@@ -37,7 +37,7 @@ jobs:
     
     #List contents of dist directory to verify executable creation
     - name: List dist directory
-      run: dir dist
+      run: dir dist\app
     
     # Copy executable to repo's dist folder
     - name: Move executable to dist folder
