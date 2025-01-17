@@ -57,7 +57,7 @@ jobs:
     - name: Clean up build artifacts
       shell: cmd
       run: |
-        rmdir /s /q app\_internal
+        rmdir /s /q dist\app
 
     # Push the executable to the repository
     - name: Commit and push dist folder
@@ -75,6 +75,7 @@ jobs:
   
 
   build-macos:
+    needs: build-windows
     runs-on: macos-latest
 
     steps:
