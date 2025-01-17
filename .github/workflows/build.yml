@@ -57,7 +57,6 @@ jobs:
     - name: Clean up build artifacts
       shell: cmd
       run: |
-        del /q dist\app\app.exe
         rmdir /s /q app\_internal
 
     # Push the executable to the repository
