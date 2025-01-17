@@ -33,7 +33,7 @@ jobs:
     # Build the executable
     - name: Build executable
       run: |
-        pyinstaller --noconfirm app.spec
+        pyinstaller --onefile --add-data "fonts/AlbertSans-Regular.ttf;fonts" --add-data "fonts/Sora-Medium.ttf;fonts" --noconfirm --name app app.py
     
     #List contents of dist directory to verify executable creation
     - name: List dist directory
