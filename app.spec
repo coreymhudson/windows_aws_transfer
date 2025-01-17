@@ -2,11 +2,13 @@
 
 block_cipher = None
 
+datas=[('fonts/AlbertSans-Regular.ttf', 'fonts'), ('fonts/Sora-Medium.ttf', 'fonts')]
+
 a = Analysis(
     ['app.py'],
     pathex=['.'],
     binaries=[],
-    datas=[('fonts/AlbertSans-Regular.ttf', 'fonts'), ('fonts/Sora-Medium.ttf', 'fonts')],
+    datas=datas,
     hiddenimports=[],
     hookspath=[],
     runtime_hooks=[],
