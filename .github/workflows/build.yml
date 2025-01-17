@@ -33,7 +33,7 @@ jobs:
     # Build the executable
     - name: Build executable
       run: |
-        pyinstaller --onefile --noconsole app.spec
+        pyinstaller app.spec
     
     # Copy executable to repo's dist folder
     - name: Move executable to dist folder
@@ -91,7 +91,7 @@ jobs:
     # Build the macOS executable
     - name: Build macOS executable
       run: |
-        pyinstaller --onefile --noconsole -y app.spec
+        pyinstaller app.spec
 
     # Copy executable to repo's dist folder
     - name: Move executable to dist folder
@@ -103,7 +103,6 @@ jobs:
     - name: Clean up build artifacts
       run: |
         rm -rf build
-        rm -f *.spec
         rm -rf dist/app
         rm -rf dist/app.app
 

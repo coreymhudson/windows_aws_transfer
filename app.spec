@@ -28,7 +28,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=True,  # Set to False if you want a windowed application without a console
+    console=False,  # Set to False for a windowed application without a console
 )
 coll = COLLECT(
     exe,
