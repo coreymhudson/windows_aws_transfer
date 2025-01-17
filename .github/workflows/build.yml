@@ -91,22 +91,17 @@ jobs:
     # Build the macOS executable
     - name: Build macOS executable
       run: |
-        pyinstaller --noconfirm app.spec
+        pyinstaller --onefile --add-data "fonts/AlbertSans-Regular.ttf:fonts" --add-data "fonts/Sora-Medium.ttf:fonts" --noconfirm --name app app.py
     
     #List contents of dist directory to verify executable creation
-    - name: List dist directory
-      run: |
-        ls dist
+    #- name: List dist directory
+    #  run: |
+    #    ls dist
     
-    - name: List app directory
-      run: |
-        ls -lart dist/app
-
     # Copy executable to repo's dist folder
     - name: Move executable to dist folder
       run: |
-        mkdir -p ${GITHUB_WORKSPACE}/dist
-        cp dist/app/app ${GITHUB_WORKSPACE}/dist/macos_aws_mover
+        mv dist/app ${GITHUB_WORKSPACE}/dist/macos_aws_mover
     
     # Clean up build artifacts
     #- name: Clean up build artifacts
