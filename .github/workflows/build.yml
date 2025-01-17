@@ -43,7 +43,7 @@ jobs:
     - name: Move executable to dist folder
       shell: cmd
       run: |
-        copy app.exe "%GITHUB_WORKSPACE%\dist\windows_aws_mover.exe"
+        move dist\app.exe "%GITHUB_WORKSPACE%\dist\windows_aws_mover.exe"
 
     # Clean up build artifacts
     # - name: Clean up build artifacts
